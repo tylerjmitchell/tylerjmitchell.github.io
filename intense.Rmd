@@ -7,8 +7,17 @@ output:
     css: "stylesheet.css"
 ---
 
+```{css, echo=FALSE}
+.theme {
+  background-color: #f7f4f9;
+  border: 2px black;
+  font-weight: bold;
+}
+```
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(class.source = "theme")
 ```
 
 ## Introduction
@@ -26,6 +35,7 @@ A daily summary weather station .csv file from NOAA's Climate Data Online portal
 ```{r message = FALSE}
 require("tidyverse")
 ```
+
 ```{r}
 # read climate data ----
 data <- read.csv("2917741.csv")
@@ -75,4 +85,4 @@ ire
 
 [4] Moustakis, Y., Papalexiou, S. M., Onof, C. J., & Paschalis, A. (2021). [Seasonality, intensity, and duration of rainfall extremes change in a warmer climate.](https://doi.org/10.1029/2020EF001824) Earth's Future, 9(3), e2020EF001824.
 
-[5] https://www.ncdc.noaa.gov/cdo-web/results
+[5] <https://www.ncdc.noaa.gov/cdo-web/results>

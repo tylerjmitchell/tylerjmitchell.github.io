@@ -388,6 +388,13 @@ pre code {
 </div>
 
 
+<style type="text/css">
+.theme {
+  background-color: #f7f4f9;
+  border: 2px black;
+  font-weight: bold;
+}
+</style>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
 <p>I am interested in tree radial growth responses to intense
@@ -408,8 +415,8 @@ coverage.</p>
 </div>
 <div id="process" class="section level2">
 <h2>Process</h2>
-<pre class="r"><code>require(&quot;tidyverse&quot;)</code></pre>
-<pre class="r"><code># read climate data ----
+<pre class="r theme"><code>require(&quot;tidyverse&quot;)</code></pre>
+<pre class="r theme"><code># read climate data ----
 data &lt;- read.csv(&quot;2917741.csv&quot;)
 head(data)</code></pre>
 <pre><code>##       STATION             NAME LATITUDE LONGITUDE ELEVATION       DATE PRCP
@@ -419,7 +426,7 @@ head(data)</code></pre>
 ## 4 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-04  0.0
 ## 5 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-05  1.3
 ## 6 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-06  0.0</code></pre>
-<pre class="r"><code># convert NOAA&#39;s DATE into three separate variables using tidyr ----
+<pre class="r theme"><code># convert NOAA&#39;s DATE into three separate variables using tidyr ----
 data &lt;- tidyr::separate(data, DATE, sep=&quot;-&quot;, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;))
 data$year &lt;- as.numeric(data$year)
 data$month &lt;- as.numeric(data$month)
