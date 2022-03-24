@@ -1,0 +1,78 @@
+---
+title: "intense rainfall events in R"
+author: "Tyler Mitchell"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    css: "stylesheet.css"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+I am interested in tree radial growth responses to intense precipitation. Here, we define intense precipitation as any daily precipitation value that is \>2.0 standard deviations above the long-term mean [1]. This classification technique is related to other measures of precipitation intensity, which is an area of continued research interest [e.g., 2, 3, 4].
+
+A member of my doctoral committee suggested that it could be helpful to share a standardized method to calculate intense rain events (IREs), so here we are!
+
+## Data inputs
+
+A daily summary weather station .csv file from NOAA's Climate Data Online portal [5], preferably with a high percentage of data coverage.
+
+## Process
+
+```{r message = FALSE}
+require("tidyverse")
+```
+```{r}
+# read climate data ----
+data <- read.csv("2917741.csv")
+head(data)
+```
+
+```{r}
+# convert NOAA's DATE into three separate variables using tidyr ----
+data <- tidyr::separate(data, DATE, sep="-", into = c("year", "month", "day"))
+data$year <- as.numeric(data$year)
+data$month <- as.numeric(data$month)
+data$day <- as.numeric(data$day)
+
+# remove missing precipitation observations ----
+data <- data[!is.na(data$PRCP),]
+
+# subset months of interest for intense rainfall calculation, here: july (7) ----
+selected.month <- 7
+data <- data[data$month == selected.month,]
+
+# standard-normal (z) scores for precipitation and selection of intensity threshold ----
+data$z <- scale(data$PRCP)
+threshold <- 2.00
+data$ire <- ifelse(data$z > threshold, 1, 0)
+
+# retain precipitation amounts from intense rainfall event (ire) selection ----
+data$ireppt <- ifelse(data$ire == 1, data$PRCP, 0)
+
+# summarize intense rainfall events by year ----
+ire.frequency <- setNames(aggregate(data$ire ~ data$year, FUN = sum),
+                   c("year", "ire.frequency"))
+
+ire.precipitation <- setNames(aggregate(data$ireppt ~ data$year, FUN = sum),
+                              c("year", "ire.precipitation"))
+
+ire <- merge(ire.frequency, ire.precipitation, by = "year")
+ire
+```
+
+## References
+
+[1] Mitchell, T. J., Knapp, P. A., & Patterson, T. W. (2020). [The importance of infrequent, high-intensity rainfall events for longleaf pine (Pinus palustris Mill.) radial growth and implications for dendroclimatic research.](https://doi.org/10.1016/j.tfp.2020.100009) Trees, Forests and People, 1, 100009.
+
+[2] Post, A. K., & Knapp, A. K. (2020). [The importance of extreme rainfall events and their timing in a semi‐arid grassland.](https://doi.org/10.1111/1365-2745.13478) Journal of Ecology, 108(6), 2431-2443.
+
+[3] Griffin‐Nolan, R. J., Slette, I. J., & Knapp, A. K. (2021). [Deconstructing precipitation variability: Rainfall event size and timing uniquely alter ecosystem dynamics.](https://doi.org/10.1111/1365-2745.13724) Journal of Ecology, 109(9), 3356-3369.
+
+[4] Moustakis, Y., Papalexiou, S. M., Onof, C. J., & Paschalis, A. (2021). [Seasonality, intensity, and duration of rainfall extremes change in a warmer climate.](https://doi.org/10.1029/2020EF001824) Earth's Future, 9(3), e2020EF001824.
+
+[5] https://www.ncdc.noaa.gov/cdo-web/results
