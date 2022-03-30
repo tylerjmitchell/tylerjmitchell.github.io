@@ -11,7 +11,7 @@
 
 <meta name="author" content="Tyler Mitchell" />
 
-<meta name="date" content="2022-03-24" />
+<meta name="date" content="2022-03-30" />
 
 <title>intense rainfall events in R</title>
 
@@ -255,7 +255,7 @@ if (window.hljs) {
 
 
 <style type="text/css">body {
-color: #444;
+color: #000000;
 font-size: 16px;
 line-height: 1.4;
 margin: auto;
@@ -266,11 +266,11 @@ h1,
 h2,
 h3 {
 line-height: 1.2;
-color: #000;
-font-family: Tahoma, Geneva, sans-serif;
+color: #000000;
+font-family: 'Helvetica', 'Arial', sans-serif;
 }
 p {
-font-family: Tahoma, Geneva, sans-serif;
+font-family: 'Helvetica', 'Arial', sans-serif;
 } </style>
 
 
@@ -383,7 +383,7 @@ pre code {
 
 <h1 class="title toc-ignore">intense rainfall events in R</h1>
 <h4 class="author">Tyler Mitchell</h4>
-<h4 class="date">2022-03-24</h4>
+<h4 class="date">2022-03-30</h4>
 
 </div>
 
@@ -404,7 +404,7 @@ long-term mean [1]. This classification technique is related to other
 measures of precipitation intensity, which is an area of continued
 research interest [e.g., 2, 3, 4].</p>
 <p>A member of my doctoral committee suggested that it could be helpful
-to share a standardized method to calculate intense rainfall events (IREs),
+to share a standardized method to calculate intense rain events (IREs),
 so here we are!</p>
 </div>
 <div id="data-inputs" class="section level2">
@@ -538,6 +538,48 @@ ire</code></pre>
 ## 79 2019             2              65.8
 ## 80 2020             0               0.0
 ## 81 2021             1              24.4</code></pre>
+<pre class="r theme"><code># another workflow using the lubridate package and pipes to calculate all years 
+# and months at once. calculates standard normal (z) scores based on ALL months distribution ----
+library(&quot;lubridate&quot;)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre class="r theme"><code>data &lt;- read.csv(&quot;2917741.csv&quot;)
+data$LATITUDE &lt;- as.factor(data$LATITUDE)
+data$LONGITUDE &lt;- as.factor(data$LONGITUDE)
+data$ELEVATION &lt;- as.factor(data$ELEVATION)
+
+# remove missing precipitation observations ----
+data &lt;- data[!is.na(data$PRCP),]
+
+# standard-normal (z) scores for precipitation and selection of intensity threshold ----
+data$z &lt;- scale(data$PRCP)
+threshold &lt;- 2.00
+data$ire &lt;- ifelse(data$z &gt; threshold, 1, 0)
+
+# retain precipitation amounts from intense rainfall event (ire) selection ----
+data$ireppt &lt;- ifelse(data$ire == 1, data$PRCP, 0)
+
+data %&gt;% 
+  group_by(year = year(DATE), month = month(DATE)) %&gt;% 
+  summarise_if(is.numeric, sum)</code></pre>
+<pre><code>## # A tibble: 970 × 6
+## # Groups:   year [82]
+##     year month  PRCP      z   ire ireppt
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1  1940     1  74.9 -2.60      1   36.6
+##  2  1940     2  78.5 -1.47      0    0  
+##  3  1940     3  68.8 -3.29      0    0  
+##  4  1940     4  65.6 -3.29      0    0  
+##  5  1940     5 198.  11.4       2  136. 
+##  6  1940     6  86.9 -0.876     0    0  
+##  7  1940     7  70.3 -3.12      0    0  
+##  8  1940     8 205.  12.2       3  138. 
+##  9  1940     9  41.4 -6.04      1   23.6
+## 10  1940    10  21.1 -8.70      0    0  
+## # … with 960 more rows</code></pre>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
