@@ -540,12 +540,7 @@ ire</code></pre>
 ## 81 2021             1              24.4</code></pre>
 <pre class="r theme"><code># another workflow using the lubridate package and pipes to calculate all years 
 # and months at once. calculates standard normal (z) scores based on ALL months distribution ----
-library(&quot;lubridate&quot;)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     date, intersect, setdiff, union</code></pre>
+require(&quot;lubridate&quot;)</code></pre>
 <pre class="r theme"><code>data &lt;- read.csv(&quot;2917741.csv&quot;)
 data$LATITUDE &lt;- as.factor(data$LATITUDE)
 data$LONGITUDE &lt;- as.factor(data$LONGITUDE)
