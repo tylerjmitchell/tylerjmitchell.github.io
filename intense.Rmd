@@ -78,11 +78,9 @@ ire
 ```{r}
 # another workflow using the lubridate package and pipes to calculate all years 
 # and months at once. calculates standard normal (z) scores based on ALL months distribution ----
-library("lubridate")
+require("lubridate")
+require("tidyverse")
 data <- read.csv("2917741.csv")
-data$LATITUDE <- as.factor(data$LATITUDE)
-data$LONGITUDE <- as.factor(data$LONGITUDE)
-data$ELEVATION <- as.factor(data$ELEVATION)
 
 # remove missing precipitation observations ----
 data <- data[!is.na(data$PRCP),]
@@ -95,9 +93,11 @@ data$ire <- ifelse(data$z > threshold, 1, 0)
 # retain precipitation amounts from intense rainfall event (ire) selection ----
 data$ireppt <- ifelse(data$ire == 1, data$PRCP, 0)
 
-data %>% 
+data <- data %>% 
   group_by(year = year(DATE), month = month(DATE)) %>% 
   summarise_if(is.numeric, sum)
+
+data[c(1:2,6,8:9)]
 ```
 
 ## References

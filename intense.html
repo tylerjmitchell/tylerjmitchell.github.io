@@ -255,7 +255,7 @@ if (window.hljs) {
 
 
 <style type="text/css">body {
-color: #000000;
+color: #454545;
 font-size: 16px;
 line-height: 1.4;
 margin: auto;
@@ -266,11 +266,11 @@ h1,
 h2,
 h3 {
 line-height: 1.2;
-color: #000000;
-font-family: 'Helvetica', 'Arial', sans-serif;
+color: #000;
+font-family: Tahoma, Geneva, sans-serif;
 }
 p {
-font-family: 'Helvetica', 'Arial', sans-serif;
+font-family: Tahoma, Geneva, sans-serif;
 } </style>
 
 
@@ -541,10 +541,14 @@ ire</code></pre>
 <pre class="r theme"><code># another workflow using the lubridate package and pipes to calculate all years 
 # and months at once. calculates standard normal (z) scores based on ALL months distribution ----
 require(&quot;lubridate&quot;)</code></pre>
-<pre class="r theme"><code>data &lt;- read.csv(&quot;2917741.csv&quot;)
-data$LATITUDE &lt;- as.factor(data$LATITUDE)
-data$LONGITUDE &lt;- as.factor(data$LONGITUDE)
-data$ELEVATION &lt;- as.factor(data$ELEVATION)
+<pre><code>## Loading required package: lubridate</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lubridate&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union</code></pre>
+<pre class="r theme"><code>require(&quot;tidyverse&quot;)
+data &lt;- read.csv(&quot;2917741.csv&quot;)
 
 # remove missing precipitation observations ----
 data &lt;- data[!is.na(data$PRCP),]
@@ -557,23 +561,25 @@ data$ire &lt;- ifelse(data$z &gt; threshold, 1, 0)
 # retain precipitation amounts from intense rainfall event (ire) selection ----
 data$ireppt &lt;- ifelse(data$ire == 1, data$PRCP, 0)
 
-data %&gt;% 
+data &lt;- data %&gt;% 
   group_by(year = year(DATE), month = month(DATE)) %&gt;% 
-  summarise_if(is.numeric, sum)</code></pre>
-<pre><code>## # A tibble: 970 × 6
+  summarise_if(is.numeric, sum)
+
+data[c(1:2,6,8:9)]</code></pre>
+<pre><code>## # A tibble: 970 × 5
 ## # Groups:   year [82]
-##     year month  PRCP      z   ire ireppt
-##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-##  1  1940     1  74.9 -2.60      1   36.6
-##  2  1940     2  78.5 -1.47      0    0  
-##  3  1940     3  68.8 -3.29      0    0  
-##  4  1940     4  65.6 -3.29      0    0  
-##  5  1940     5 198.  11.4       2  136. 
-##  6  1940     6  86.9 -0.876     0    0  
-##  7  1940     7  70.3 -3.12      0    0  
-##  8  1940     8 205.  12.2       3  138. 
-##  9  1940     9  41.4 -6.04      1   23.6
-## 10  1940    10  21.1 -8.70      0    0  
+##     year month  PRCP   ire ireppt
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+##  1  1940     1  74.9     1   36.6
+##  2  1940     2  78.5     0    0  
+##  3  1940     3  68.8     0    0  
+##  4  1940     4  65.6     0    0  
+##  5  1940     5 198.      2  136. 
+##  6  1940     6  86.9     0    0  
+##  7  1940     7  70.3     0    0  
+##  8  1940     8 205.      3  138. 
+##  9  1940     9  41.4     1   23.6
+## 10  1940    10  21.1     0    0  
 ## # … with 960 more rows</code></pre>
 </div>
 <div id="references" class="section level2">
