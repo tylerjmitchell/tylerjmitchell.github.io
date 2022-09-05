@@ -9,11 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Tyler Mitchell" />
 
-<meta name="date" content="2022-03-30" />
 
-<title>intense rainfall events in R</title>
+<title>intense</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -254,24 +252,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">body {
-color: #454545;
-font-size: 16px;
-line-height: 1.4;
-margin: auto;
-max-width: 1000px;
-padding: 0 10px;
-}
-h1,
-h2,
-h3 {
-line-height: 1.2;
-color: #000;
-font-family: Tahoma, Geneva, sans-serif;
-}
-p {
-font-family: Tahoma, Geneva, sans-serif;
-} </style>
 
 
 
@@ -381,25 +361,19 @@ pre code {
 
 
 
-<h1 class="title toc-ignore">intense rainfall events in R</h1>
-<h4 class="author">Tyler Mitchell</h4>
-<h4 class="date">2022-03-30</h4>
 
 </div>
 
 
-<style type="text/css">
-.theme {
-  background-color: #f7f4f9;
-  border: 2px black;
-  font-weight: bold;
-}
-</style>
+<div id="intense-rainfall-events-in-r" class="section level1">
+<h1>Intense rainfall events in R</h1>
+<p>Tyler Mitchell<br />
+2022-03-30</p>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>I am interested in tree radial growth responses to intense
-precipitation. Here, we define intense precipitation as any daily
-precipitation value that is &gt;2.0 standard deviations above the
+<p><font size="4"> I am interested in tree radial growth responses to
+intense precipitation. Here, we define intense precipitation as any
+daily precipitation value that is &gt;2.0 standard deviations above the
 long-term mean [1]. This classification technique is related to other
 measures of precipitation intensity, which is an area of continued
 research interest [e.g., 2, 3, 4].</p>
@@ -415,18 +389,18 @@ coverage.</p>
 </div>
 <div id="process" class="section level2">
 <h2>Process</h2>
-<pre class="r theme"><code>require(&quot;tidyverse&quot;)</code></pre>
-<pre class="r theme"><code># read climate data ----
+<pre class="r"><code>require(&quot;tidyverse&quot;)
+# read climate data ----
 data &lt;- read.csv(&quot;2917741.csv&quot;)
-head(data)</code></pre>
-<pre><code>##       STATION             NAME LATITUDE LONGITUDE ELEVATION       DATE PRCP
+head(data)
+##       STATION             NAME LATITUDE LONGITUDE ELEVATION       DATE PRCP
 ## 1 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-01  0.0
 ## 2 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-02  0.0
 ## 3 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-03  0.0
 ## 4 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-04  0.0
 ## 5 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-05  1.3
-## 6 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-06  0.0</code></pre>
-<pre class="r theme"><code># convert NOAA&#39;s DATE into three separate variables using tidyr ----
+## 6 USC00317097 RANDLEMAN, NC US 35.82197 -79.78975     246.9 1940-01-06  0.0
+# convert NOAA&#39;s DATE into three separate variables using tidyr ----
 data &lt;- tidyr::separate(data, DATE, sep=&quot;-&quot;, into = c(&quot;year&quot;, &quot;month&quot;, &quot;day&quot;))
 data$year &lt;- as.numeric(data$year)
 data$month &lt;- as.numeric(data$month)
@@ -455,8 +429,8 @@ ire.precipitation &lt;- setNames(aggregate(data$ireppt ~ data$year, FUN = sum),
                               c(&quot;year&quot;, &quot;ire.precipitation&quot;))
 
 ire &lt;- merge(ire.frequency, ire.precipitation, by = &quot;year&quot;)
-ire</code></pre>
-<pre><code>##    year ire.frequency ire.precipitation
+ire
+##    year ire.frequency ire.precipitation
 ## 1  1940             0               0.0
 ## 2  1941             1              37.6
 ## 3  1942             2              51.8
@@ -537,17 +511,19 @@ ire</code></pre>
 ## 78 2018             1              51.6
 ## 79 2019             2              65.8
 ## 80 2020             0               0.0
-## 81 2021             1              24.4</code></pre>
-<pre class="r theme"><code># another workflow using the lubridate package and pipes to calculate all years 
+## 81 2021             1              24.4
+
+
+# another workflow using the lubridate package and pipes to calculate all years 
 # and months at once. calculates standard normal (z) scores based on ALL months distribution ----
-require(&quot;lubridate&quot;)</code></pre>
-<pre><code>## Loading required package: lubridate</code></pre>
-<pre><code>## 
-## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
+require(&quot;lubridate&quot;)
+## Loading required package: lubridate
 ## 
-##     date, intersect, setdiff, union</code></pre>
-<pre class="r theme"><code>require(&quot;tidyverse&quot;)
+## Attaching package: &#39;lubridate&#39;
+## The following objects are masked from &#39;package:base&#39;:
+## 
+##     date, intersect, setdiff, union
+require(&quot;tidyverse&quot;)
 data &lt;- read.csv(&quot;2917741.csv&quot;)
 
 # remove missing precipitation observations ----
@@ -565,8 +541,8 @@ data &lt;- data %&gt;%
   group_by(year = year(DATE), month = month(DATE)) %&gt;% 
   summarise_if(is.numeric, sum)
 
-data[c(1:2,6,8:9)]</code></pre>
-<pre><code>## # A tibble: 970 × 5
+data[c(1:2,6,8:9)]
+## # A tibble: 970 × 5
 ## # Groups:   year [82]
 ##     year month  PRCP   ire ireppt
 ##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
@@ -581,25 +557,26 @@ data[c(1:2,6,8:9)]</code></pre>
 ##  9  1940     9  41.4     1   23.6
 ## 10  1940    10  21.1     0    0  
 ## # … with 960 more rows</code></pre>
+<p></font></p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<p>[1] Mitchell, T. J., Knapp, P. A., &amp; Patterson, T. W. (2020). <a href="https://doi.org/10.1016/j.tfp.2020.100009">The importance of
-infrequent, high-intensity rainfall events for longleaf pine (Pinus
-palustris Mill.) radial growth and implications for dendroclimatic
-research.</a> Trees, Forests and People, 1, 100009.</p>
-<p>[2] Post, A. K., &amp; Knapp, A. K. (2020). <a href="https://doi.org/10.1111/1365-2745.13478">The importance of extreme
-rainfall events and their timing in a semi‐arid grassland.</a> Journal
-of Ecology, 108(6), 2431-2443.</p>
+<p>[1] Mitchell, T. J., Knapp, P. A., &amp; Patterson, T. W. (2020). The
+importance of infrequent, high-intensity rainfall events for longleaf
+pine (Pinus palustris Mill.) radial growth and implications for
+dendroclimatic research. Trees, Forests and People, 1, 100009.</p>
+<p>[2] Post, A. K., &amp; Knapp, A. K. (2020). The importance of extreme
+rainfall events and their timing in a semi‐arid grassland. Journal of
+Ecology, 108(6), 2431-2443.</p>
 <p>[3] Griffin‐Nolan, R. J., Slette, I. J., &amp; Knapp, A. K. (2021).
-<a href="https://doi.org/10.1111/1365-2745.13724">Deconstructing
-precipitation variability: Rainfall event size and timing uniquely alter
-ecosystem dynamics.</a> Journal of Ecology, 109(9), 3356-3369.</p>
+Deconstructing precipitation variability: Rainfall event size and timing
+uniquely alter ecosystem dynamics. Journal of Ecology, 109(9),
+3356-3369.</p>
 <p>[4] Moustakis, Y., Papalexiou, S. M., Onof, C. J., &amp; Paschalis,
-A. (2021). <a href="https://doi.org/10.1029/2020EF001824">Seasonality,
-intensity, and duration of rainfall extremes change in a warmer
-climate.</a> Earth’s Future, 9(3), e2020EF001824.</p>
+A. (2021). Seasonality, intensity, and duration of rainfall extremes
+change in a warmer climate. Earth’s Future, 9(3), e2020EF001824.</p>
 <p>[5] <a href="https://www.ncdc.noaa.gov/cdo-web/results" class="uri">https://www.ncdc.noaa.gov/cdo-web/results</a></p>
+</div>
 </div>
 
 
