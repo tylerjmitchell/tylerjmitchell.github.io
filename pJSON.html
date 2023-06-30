@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON to pretty JSON converter</title>
+  <style>
+body {
+  font-family: helvetica;
+    margin:1em auto;
+		max-width:40em
+}
+
+::selection {
+  background: #FAE4A0;
+}
+
+a {
+  color: #ce1256;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+    .json-key {
+      color: #fffff;
+      font-weight: bold;
+    }
+
+    .json-string {
+      color: #c51b7d;
+    }
+
+    .json-number {
+      color: #4d9221;
+    }
+
+    .json-boolean {
+      color: darkred;
+    }
+
+    .json-null {
+      color: magenta;
+    }
+  </style>
+  <script>
+    function convertJSON() {
+      var inputJSON = document.getElementById('input').value;
+      var parsedJSON;
+
+      try {
+        parsedJSON = JSON.parse(inputJSON);
+        var prettyJSON = JSON.stringify(parsedJSON, null, 2);
+        var coloredJSON = syntaxHighlight(prettyJSON);
+        document.getElementById('output').innerHTML = coloredJSON;
+      } catch (error) {
+        document.getElementById('output').innerHTML = '<span class="json-null">Invalid JSON</span>';
+      }
+    }
+
+    function syntaxHighlight(json) {
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(
+        /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g,
+        function (match) {
+          var cls = 'json-number';
+          if (/^"/.test(match)) {
+            if (/:$/.test(match)) {
+              cls = 'json-key';
+            } else {
+              cls = 'json-string';
+            }
+          } else if (/true|false/.test(match)) {
+            cls = 'json-boolean';
+          } else if (/null/.test(match)) {
+            cls = 'json-null';
+          }
+          return '<span class="' + cls + '">' + match + '</span>';
+        }
+      );
+    }
+  </script>
+</head>
+<body>
+  <h1>JSON to pretty JSON converter</h1>
+  
+  <textarea id="input" rows="10" cols="50" placeholder="enter JSON here!"></textarea>
+  <br>
+  <button onclick="convertJSON()">Convert!</button>
+  <br>
+  <pre id="output"></pre>
+  <br>
+  <p>nothing that you can't find elsewhere in browser add-ons, but this one is hosted by me :)</p>
+  <p>also works for JSON validation!</p>
+  <p><a href="https://tylermitchell.earth"><-- back to tylermitchell.earth✨</a></p>
+</body>
+</html>
