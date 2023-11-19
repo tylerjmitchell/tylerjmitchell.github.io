@@ -58,7 +58,7 @@ a:link {
     <button onclick="convertToTimestamp()">Convert!</button>
     <p id="convertedToTimestamp"></p>
     
-    <h2>Current Unix Timestamp</h2>
+    <h2>Current Unix timestamp</h2>
     <button onclick="getCurrentTimestamp()">Get current time!</button>
     <p id="currentTimestamp"></p>
     
@@ -72,12 +72,12 @@ a:link {
         function convertToTimestamp() {
             const inputDate = new Date(document.getElementById('inputDate').value);
             const convertedToTimestamp = inputDate.getTime() / 1000;
-            document.getElementById('convertedToTimestamp').innerText = `Converted Unix Timestamp: ${convertedToTimestamp}`;
+            document.getElementById('convertedToTimestamp').innerText = `Converted Unix timestamp: ${convertedToTimestamp}`;
         }
         
         function getCurrentTimestamp() {
             const currentTimestamp = Math.floor(new Date().getTime() / 1000);
-            document.getElementById('currentTimestamp').innerText = `Current Unix Timestamp: ${currentTimestamp}`;
+            document.getElementById('currentTimestamp').innerText = `Current Unix timestamp: ${currentTimestamp}`;
         }
     </script>
 <p><a href="https://tylermitchell.earth"><-- back to tylermitchell.earth✨</a></p>
