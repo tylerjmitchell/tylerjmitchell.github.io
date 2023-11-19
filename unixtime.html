@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<style>
+body {
+  font-family: helvetica;
+    margin:1em auto;
+		max-width:40em
+}
+
+::selection {
+  background: #FAE4A0;
+}
+
+a {
+  color: #ce1256;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+    .json-key {
+      color: #fffff;
+      font-weight: bold;
+    }
+
+    .json-string {
+      color: #c51b7d;
+    }
+
+    .json-number {
+      color: #4d9221;
+    }
+
+    .json-boolean {
+      color: darkred;
+    }
+
+    .json-null {
+      color: magenta;
+    }
+  </style>
+<head>
+    <title>Unix timestamp converter</title>
+</head>
+<body>
+    <h1>Unix timestamp converter</h1>
+    <br>
+    <h2>Convert from timestamp</h2>
+    <label for="inputTimestamp">Enter a Unix timestamp:</label>
+    <input type="text" id="inputTimestamp">
+    <button onclick="convertFromTimestamp()">Convert!</button>
+    <p id="convertedFromTimestamp"></p>
+    
+    <h2>Convert to timestamp</h2>
+    <label for="inputDate">Enter a date & time:</label>
+    <input type="datetime-local" id="inputDate">
+    <button onclick="convertToTimestamp()">Convert!</button>
+    <p id="convertedToTimestamp"></p>
+    
+    <h2>Current Unix Timestamp</h2>
+    <button onclick="getCurrentTimestamp()">Get current time!</button>
+    <p id="currentTimestamp"></p>
+    
+    <script>
+        function convertFromTimestamp() {
+            const inputTimestamp = document.getElementById('inputTimestamp').value;
+            const convertedFromTimestamp = new Date(parseInt(inputTimestamp) * 1000);
+            document.getElementById('convertedFromTimestamp').innerText = `Converted Date & Time: ${convertedFromTimestamp.toUTCString()}`;
+        }
+        
+        function convertToTimestamp() {
+            const inputDate = new Date(document.getElementById('inputDate').value);
+            const convertedToTimestamp = inputDate.getTime() / 1000;
+            document.getElementById('convertedToTimestamp').innerText = `Converted Unix Timestamp: ${convertedToTimestamp}`;
+        }
+        
+        function getCurrentTimestamp() {
+            const currentTimestamp = Math.floor(new Date().getTime() / 1000);
+            document.getElementById('currentTimestamp').innerText = `Current Unix Timestamp: ${currentTimestamp}`;
+        }
+    </script>
+<p><a href="https://tylermitchell.earth"><-- back to tylermitchell.earth✨</a></p>
+</body>
+</html>
