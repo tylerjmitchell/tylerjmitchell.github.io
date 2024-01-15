@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: helvetica;
+      margin: 16px auto;
+      max-width: 640px;
+      background-color: #fffafb;
+    }
+
+    ::selection {
+      background: #FAE678;
+    }
+
+    a:link, a:visited {
+      text-decoration: none;
+      color: #ce1256;
+    }
+
+    a:hover {
+      color: #ce1256;
+      background-color: #FAE678;
+    }
+
+    .grid {
+      font-size: 20px;
+      line-height: 1.2;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 5px;
+    }
+
+    .grid-item {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .emojis {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<title>tyler mitchell🌿✨</title>
+<body>
+<h2>emoji grid🌿✨</h2><p>
+<div class="grid" onmouseover="replaceWithRandomEmoji(event)" onmouseout="resetGrid()">
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+  <div class="grid-item">~</div>
+</div>
+
+<script>
+  let selectedEmoji = '';
+
+  function replaceWithRandomEmoji(event) {
+    const gridItem = event.target;
+    if (gridItem.textContent === '~') {
+      const emojis = ['🌿', '✨', '🌈', '🌻', '🌟'];
+      const randomIndex = Math.floor(Math.random() * emojis.length);
+      selectedEmoji = emojis[randomIndex];
+      gridItem.textContent = selectedEmoji;
+    }
+    document.querySelector('.emojis').style.display = 'inline';
+  }
+
+  function resetGrid() {
+    // Do nothing on mouseout to persist the selected emoji
+  }
+</script></p>
+<br>
+<p>i'm so glad you're here!</p>
+<p>hover over each "~" in the grid to display emojis randomly!</p>
+<p>for fun, the probability (<i>p</i>) of 50 identical emojis in the grid (from the set of emojis = ['🌿', '✨', '🌈', '🌻', '🌟']) is:</p>
+<ul>
+<li>P(All 50 emojis are the same) = p<sup>50</sup></li>
+</ul>
+<p>as each space has an equal chance for the 5 emojis, <i>p</i> = 1/5:</p>
+<ul><li>P(All 50 emojis are the same)= (1/5)<sup>50</sup> = 1.1258999 * 10<sup>-35</sup>, or, 1/<i>p</i>:</li>
+<li>1 in <b><i>88,817,841,999,999,984,808,320,016,456,592,824</b></i> occurrences</li></ul>
+</body>
+</html>
