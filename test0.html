@@ -1,0 +1,16 @@
+<html>
+	<body>
+	Test Page
+	</body>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(e) {
+
+			$.get("https://sndayambaje.esri.com:6443/arcgis/rest/services?f=json&token=AisXIoSoXsCp5m1sDJoGO4fwzWxeMoI6cNKniRL7vsNZNN6fcFDrhKfZS8jxYR7Aysl2-bV_77_WNWChp0My4lH_lj0PHq3GJd_jKIbdC7GtOYJO28qfO1T6va9gi6preOxPoYy2t_PbVWRB_cbfZ_bVs5AI9pqMFgEbXfZfXfA.", function(res) {
+			console.log(res);
+			});
+			
+		});
+	</script>
+</html>
